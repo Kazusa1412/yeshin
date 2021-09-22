@@ -6,4 +6,4 @@
  */
 
 rootProject.name = "yeshin"
-
+include("core")

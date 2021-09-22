@@ -9,4 +9,5 @@
 
 /*.xml
 
-/modules
+/modules/
+/artifacts/
