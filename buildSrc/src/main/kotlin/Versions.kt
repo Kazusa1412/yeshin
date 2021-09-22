@@ -16,4 +16,6 @@ object Versions {
     const val ktor = "1.6.2"
     const val kotlinxHtml = "0.7.2"
     const val kotlinxNodejs = "0.0.7"
+
+    const val compose = "1.0.0-alpha4-build348"
 }

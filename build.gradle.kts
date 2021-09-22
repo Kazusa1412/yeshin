@@ -7,10 +7,17 @@
 
 
 buildscript {
-    repositories.maven("https://maven.aliyun.com/nexus/content/groups/public/")
+
+    repositories {
+        maven("https://maven.aliyun.com/nexus/content/groups/public/")
+        mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        google()
+    }
 
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:${Versions.compose}")
     }
 }
 
