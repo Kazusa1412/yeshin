@@ -8,3 +8,9 @@
 group = "com.elouyi"
 version = "0.0.1"
 
+allprojects {
+    repositories {
+        maven("https://maven.aliyun.com/nexus/content/groups/public/")
+        mavenCentral()
+    }
+}
