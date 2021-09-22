@@ -29,10 +29,19 @@ kotlin {
 
     sourceSets {
 
+        all {
+            languageSettings {
+                optIn("kotlin.contracts.ExperimentalContracts")
+                optIn("kotlin.RequiresOptIn")
+                optIn("kotlin.OptIn")
+            }
+        }
+
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}")
                 implementation(compose.runtime)
+                implementation("io.ktor:ktor-client-core:${Versions.ktor}")
             }
         }
 
@@ -45,12 +54,14 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation("io.ktor:ktor-client-cio:${Versions.ktor}")
             }
         }
 
         val browserMain by getting {
             dependencies {
                 implementation(compose.web.core)
+                implementation("io.ktor:ktor-client-js:${Versions.ktor}")
             }
         }
     }

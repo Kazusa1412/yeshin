@@ -8,22 +8,11 @@
 
 package com.elouyi.yeshin
 
-import androidx.compose.desktop.DesktopMaterialTheme
-import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.elouyi.yeshin.ui.App
 
-@Composable
-@Preview
-public fun App() {
-    DesktopMaterialTheme {
-        Text("hello")
-    }
-}
-
-private fun main() = application {
+public fun main(args: Array<String>): Unit = application {
     Window(onCloseRequest = ::exitApplication) {
         App()
     }
