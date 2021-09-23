@@ -12,13 +12,17 @@ import com.elouyi.yeshin.utils.internal.toPrint
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.jvmErasure
 
-
+/**
+ * 提供state
+ *
+ * 如果 [S] 为对象，可使用 [com.elouyi.yeshin.utils.ShallowCopyable] 浅拷贝来刷新 state
+ */
 public interface RComponent<S> {
 
     public val state: MutableState<S>
 
     @Composable
-    public open fun render() {
+    public fun render() {
 
     }
 

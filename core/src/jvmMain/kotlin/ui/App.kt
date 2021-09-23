@@ -16,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.elouyi.yeshin.component.PersonComponent
+import com.elouyi.yeshin.component.TestPerson
 import com.elouyi.yeshin.component.invoke
 
 @Composable
@@ -24,7 +26,7 @@ public fun App() {
     Row(modifier = Modifier.background(Color(234, 246, 249)).fillMaxWidth()) {
         Column(modifier = Modifier.width(400.dp).fillMaxHeight()) {
             Head("5")
-
+            PersonComponent(TestPerson("zs", 12))
         }
         Head("20")
     }
