@@ -9,12 +9,17 @@
 package com.elouyi.yeshin.ui
 
 import androidx.compose.desktop.DesktopMaterialTheme
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
 public fun App() {
-    DesktopMaterialTheme {
-        Text("hello")
+    Head().render()
+    Row {
+        Column {
+
+        }
     }
 }

@@ -8,12 +8,19 @@
 
 package com.elouyi.yeshin
 
+import androidx.compose.material.Text
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.elouyi.yeshin.ui.App
+import com.elouyi.yeshin.ui.Head
 
-public fun main(args: Array<String>): Unit = application {
-    Window(onCloseRequest = ::exitApplication) {
-        App()
+public fun main(args: Array<String>): Unit {
+    application {
+        Window(
+            onCloseRequest = ::exitApplication,
+            title = "Yeshin"
+        ) {
+            App()
+        }
     }
 }
