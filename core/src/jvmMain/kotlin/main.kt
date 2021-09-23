@@ -9,6 +9,7 @@
 package com.elouyi.yeshin
 
 import androidx.compose.material.Text
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.elouyi.yeshin.ui.App
@@ -18,7 +19,8 @@ public fun main(args: Array<String>): Unit {
     application {
         Window(
             onCloseRequest = ::exitApplication,
-            title = "Yeshin"
+            title = "Yeshin",
+            icon = BitmapPainter(Resource.Icon.ayaka)
         ) {
             App()
         }

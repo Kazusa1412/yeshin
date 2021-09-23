@@ -12,5 +12,6 @@ import com.elouyi.yeshin.utils.YeshinKeywordDsl
 
 @YeshinDebug
 @YeshinKeywordDsl
+@PublishedApi
 internal inline val <T> T.toPrint: T
     get() = also(::println)

@@ -55,6 +55,7 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation("io.ktor:ktor-client-cio:${Versions.ktor}")
+                implementation(kotlin("reflect"))
             }
         }
 

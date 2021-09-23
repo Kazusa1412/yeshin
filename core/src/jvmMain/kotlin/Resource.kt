@@ -17,7 +17,10 @@ import kotlin.reflect.KProperty
 public object Resource {
 
     public object Icon {
+
         public val wk33: ImageBitmap by lazy { loadBitmap("icon/wk33.png") }
+
+        public val ayaka: ImageBitmap by lazy { loadBitmap("icon/ayaka.png") }
 
         public object PNG {
             public operator fun getValue(p1: Any?, prop: KProperty<*>): ImageBitmap {

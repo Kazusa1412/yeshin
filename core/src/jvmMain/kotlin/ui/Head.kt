@@ -19,29 +19,24 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import com.elouyi.yeshin.Resource
+import com.elouyi.yeshin.component.RComponent
+import com.elouyi.yeshin.component.RComponentBase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 
-public class Head : Component {
+public class Head(state: MutableState<String>) : RComponentBase<String>(state) {
 
-    init {
-        GlobalScope.launch {
-            while (true) {
-                delay(1000)
-                zz?.value += "dd"
-            }
-        }
-    }
-
-    private var zz: MutableState<String>? = null
+    public companion object : RComponent.K<Head, String>
 
     @Composable
     override fun render() {
-        if (zz === null) zz = remember { mutableStateOf("a") }
         Column {
+            println("render${this@Head}")
             val wk33 by Resource.Icon.PNG
             Image(
                 wk33,
@@ -49,8 +44,18 @@ public class Head : Component {
                 modifier = Modifier.size(40.dp).clip(CircleShape)
             )
         }
-        Text(zz!!.value)
+        Text(state.value, fontSize = 2.em)
     }
+
+    init {
+        GlobalScope.launch {
+            while (true) {
+                delay(2000)
+                state.value = Random.nextInt().toString()
+            }
+        }
+    }
+
 
     @Composable
     public fun test() {
