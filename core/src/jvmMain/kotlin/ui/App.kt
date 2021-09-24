@@ -8,25 +8,27 @@
 
 package com.elouyi.yeshin.ui
 
-import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.elouyi.yeshin.component.PersonComponent
-import com.elouyi.yeshin.component.TestPerson
+import com.elouyi.yeshin.Resource
+import com.elouyi.yeshin.component.Head
 import com.elouyi.yeshin.component.invoke
 
 @Composable
 public fun App() {
 
-    Row(modifier = Modifier.background(Color(234, 246, 249)).fillMaxWidth()) {
+    Row(
+        modifier = Modifier
+            .background(Brush.linearGradient(listOf(Resource.Colors.bk, Resource.Colors.bk2)))
+            .fillMaxWidth()
+    ) {
         Column(modifier = Modifier.width(400.dp).fillMaxHeight()) {
             Head("5")
-            PersonComponent(TestPerson("zs", 12))
         }
         Head("20")
     }

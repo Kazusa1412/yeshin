@@ -5,38 +5,58 @@
  *
  */
 
+
 package com.elouyi.yeshin.component
 
 import androidx.compose.runtime.*
-import com.elouyi.yeshin.utils.internal.toPrint
+import com.elouyi.yeshin.utils.YeshinExperimental
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.jvmErasure
+
+public interface Component {
+
+    @Composable
+    public fun render()
+}
 
 /**
  * 提供state
  *
  * 如果 [S] 为对象，可使用 [com.elouyi.yeshin.utils.ShallowCopyable] 浅拷贝来刷新 state
  */
-public interface RComponent<S> {
+@YeshinExperimental
+public interface RComponent<S> : Component {
 
     public val state: MutableState<S>
 
+    /**
+     * 子类记得加 [Composable] 注解
+     */
     @Composable
-    public fun render() {
+    @YeshinExperimental
+    public override fun render() {
 
     }
 
+    /**
+     * 子类伴生对象需要实现此接口
+     */
+    @YeshinExperimental
     public interface K<C : RComponent<S>, S>
 
 }
 
+@YeshinExperimental
 public abstract class RComponentBase<S>(override val state: MutableState<S>) : RComponent<S>
 
 @PublishedApi
+@YeshinExperimental
 internal val componentMap: MutableMap<Int, RComponent<*>> = mutableMapOf()
 
 @PublishedApi
 @Composable
+@Suppress("Unused")
+@YeshinExperimental
 internal inline fun <reified C : RComponent<S>, S> RComponent.K<C, S>.newInstance(state: S, composerKey: Int): C {
     val c = C::class.run cr@{
         val pc = primaryConstructor
@@ -62,14 +82,11 @@ internal inline fun <reified C : RComponent<S>, S> RComponent.K<C, S>.newInstanc
 }
 
 @OptIn(InternalComposeApi::class)
+@YeshinExperimental
 @Composable
 public inline operator fun <reified C : RComponent<S>, S> RComponent.K<C, S>.invoke(initState: S) {
-    println("invoke")
-    println("size is ${componentMap.size}")
-    // (componentMap[currentComposer] as? C ?: newInstance(initState, currentComposer)).render()
-
     for ((c, rc) in componentMap) {
-        println("compare key")
+        // !循环中的组件可能 key 相同
         if (c == currentComposer.compoundKeyHash && rc::class == C::class) {
             rc.render()
             return
@@ -77,5 +94,3 @@ public inline operator fun <reified C : RComponent<S>, S> RComponent.K<C, S>.inv
     }
     newInstance(initState, currentComposer.compoundKeyHash).render()
 }
-
-

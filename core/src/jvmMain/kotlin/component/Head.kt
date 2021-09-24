@@ -5,7 +5,8 @@
  *
  */
 
-package com.elouyi.yeshin.ui
+
+package com.elouyi.yeshin.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -21,8 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.elouyi.yeshin.Resource
-import com.elouyi.yeshin.component.RComponent
-import com.elouyi.yeshin.component.RComponentBase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,10 +32,19 @@ public class Head(state: MutableState<String>) : RComponentBase<String>(state) {
 
     public companion object : RComponent.K<Head, String>
 
+    init {
+        GlobalScope.launch {
+            delay(100)
+            while (true) {
+                delay(1000)
+                state.value = System.currentTimeMillis().toString()
+            }
+        }
+    }
+
     @Composable
     override fun render() {
         Column {
-            println("render${this@Head}")
             val wk33 by Resource.Icon.PNG
             Image(
                 wk33,
@@ -46,16 +54,6 @@ public class Head(state: MutableState<String>) : RComponentBase<String>(state) {
         }
         Text(state.value, fontSize = 2.em)
     }
-
-    init {
-        GlobalScope.launch {
-            while (true) {
-                delay(2000)
-                state.value = Random.nextInt().toString()
-            }
-        }
-    }
-
 
     @Composable
     public fun test() {

@@ -8,13 +8,22 @@
 
 package com.elouyi.yeshin
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.useResource
 import kotlin.reflect.KProperty
 
+/**
+ * 资源
+ */
+public sealed interface Resource {
 
-public object Resource {
+    public object Colors {
+
+        public val bk: Color = Color(234, 246, 249)
+        public val bk2: Color = Color(233, 255, 255)
+    }
 
     public object Icon {
 
@@ -31,6 +40,9 @@ public object Resource {
     }
 }
 
+/**
+ * 从 resources 目录下加载
+ */
 public fun loadBitmap(path: String): ImageBitmap {
     return useResource(path, ::loadImageBitmap)
 }
