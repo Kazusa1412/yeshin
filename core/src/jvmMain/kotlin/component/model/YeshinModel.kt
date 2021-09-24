@@ -33,16 +33,21 @@ public interface YeshinModel<S> : RComponent<S> {
 
     @Composable
     public override fun render() {
+
     }
 
     public companion object {
 
         public val models: MutableList<YeshinModel<*>> = mutableListOf()
 
+        private val builtinModels: Array<YeshinModel<*>> = arrayOf(
+            HomeModel
+        )
 
         init {
             initModels()
         }
+
 
         public val modelChangeEvent: YeshinEvent<YeshinModel<*>> = YeshinEvent()
 
@@ -51,9 +56,7 @@ public interface YeshinModel<S> : RComponent<S> {
             // TODO: 2021/9/24 加载jar
         }
 
-        private val builtinModels: Array<YeshinModel<*>> = arrayOf(
-            HomeModel
-        )
+
     }
 
 }

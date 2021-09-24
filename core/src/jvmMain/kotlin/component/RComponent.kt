@@ -10,6 +10,7 @@ package com.elouyi.yeshin.component
 
 import androidx.compose.runtime.*
 import com.elouyi.yeshin.utils.YeshinExperimental
+import kotlinx.coroutines.CoroutineScope
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.jvmErasure
 
@@ -29,6 +30,7 @@ public interface RComponent<S> : Component {
 
     public val state: MutableState<S>
 
+
     /**
      * 子类记得加 [Composable] 注解
      */
@@ -47,7 +49,9 @@ public interface RComponent<S> : Component {
 }
 
 @YeshinExperimental
-public abstract class RComponentBase<S>(override val state: MutableState<S>) : RComponent<S>
+public abstract class RComponentBase<S>(
+    override val state: MutableState<S>,
+) : RComponent<S>
 
 @PublishedApi
 @YeshinExperimental
@@ -58,27 +62,50 @@ internal val componentMap: MutableMap<Int, RComponent<*>> = mutableMapOf()
 @Suppress("Unused")
 @YeshinExperimental
 internal inline fun <reified C : RComponent<S>, S> RComponent.K<C, S>.newInstance(state: S, composerKey: Int): C {
+    var needScope = false
     val c = C::class.run cr@{
         val pc = primaryConstructor
         pc?.parameters?.run ppr@{
-            if (size != 1) return@ppr
+            if (size <= 0) return@ppr
             val pp = get(0)
-            if (pp.type.jvmErasure == MutableState::class) {
-                return@cr pc
+            if (pp.type.jvmErasure != MutableState::class) return@ppr
+            when (size) {
+                1 -> return@cr pc
+                2 -> {
+                    val p2 = get(1)
+                    if (p2.type.jvmErasure == CoroutineScope::class) {
+                        needScope = true
+                        return@cr pc
+                    }
+                }
             }
+
         }
         constructors.find {
             val ps = it.parameters
-            if (ps.size != 1) return@find false
+            if (ps.isEmpty()) return@find false
             val p = ps[0]
-            if (p.type.jvmErasure !is MutableState<*>) return@find false
-            true
+
+            when (ps.size) {
+                1 -> return@find p.type.jvmErasure == MutableState::class
+                2 -> {
+                    val p2 = ps[1]
+                    if (p2.type.jvmErasure == CoroutineScope::class) {
+                        needScope = true
+                        return@find true
+                    } else return@find false
+
+                }
+                else -> return@find false
+            }
+
         }
     } ?: error("cant find RComponent constructor for state")
     val s = remember { mutableStateOf(state) }
-    val new = c.call(s)
-    componentMap[composerKey] = new
-    return new
+    return (if (needScope) c.call(s, rememberCoroutineScope()) else c.call(s)).also {
+        componentMap[composerKey] = it
+    }
+
 }
 
 @OptIn(InternalComposeApi::class)

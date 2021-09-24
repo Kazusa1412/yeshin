@@ -17,7 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.elouyi.yeshin.Resource
 import com.elouyi.yeshin.component.Head
+import com.elouyi.yeshin.component.MainContainer
 import com.elouyi.yeshin.component.invoke
+import com.elouyi.yeshin.component.model.YeshinModel
 
 @Composable
 public fun App() {
@@ -27,9 +29,9 @@ public fun App() {
             .background(Brush.linearGradient(listOf(Resource.Colors.bk, Resource.Colors.bk2)))
             .fillMaxWidth()
     ) {
-        Column(modifier = Modifier.width(400.dp).fillMaxHeight()) {
+        Column(modifier = Modifier.width(233.dp).fillMaxHeight()) {
             Head("5")
         }
-        Head("20")
+        MainContainer(YeshinModel.models[0])
     }
 }

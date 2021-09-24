@@ -13,28 +13,34 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.elouyi.yeshin.Resource
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 
-public class Head(state: MutableState<String>) : RComponentBase<String>(state) {
+public class Head(
+    state: MutableState<String>,
+    private val scope: CoroutineScope
+) : RComponentBase<String>(state) {
 
     public companion object : RComponent.K<Head, String>
 
+    private lateinit var scaffoldState: ScaffoldState
+
     init {
-        GlobalScope.launch {
+        scope.launch {
             delay(100)
+            scaffoldState.drawerState.open()
             while (true) {
                 delay(1000)
                 state.value = System.currentTimeMillis().toString()
@@ -44,6 +50,8 @@ public class Head(state: MutableState<String>) : RComponentBase<String>(state) {
 
     @Composable
     override fun render() {
+        if (!::scaffoldState.isInitialized) scaffoldState = rememberScaffoldState()
+
         Column {
             val wk33 by Resource.Icon.PNG
             Image(
@@ -51,6 +59,15 @@ public class Head(state: MutableState<String>) : RComponentBase<String>(state) {
                 "sa",
                 modifier = Modifier.size(40.dp).clip(CircleShape)
             )
+            Scaffold(
+                scaffoldState = scaffoldState,
+                drawerContent = {
+                    Text("Drawer content")
+                },
+                drawerShape = RoundedCornerShape(3.dp)
+            ) {
+                Text("Scaffold")
+            }
         }
         Text(state.value, fontSize = 2.em)
     }
