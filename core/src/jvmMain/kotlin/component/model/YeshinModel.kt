@@ -41,7 +41,8 @@ public interface YeshinModel<S> : RComponent<S> {
         public val models: MutableList<YeshinModel<*>> = mutableListOf()
 
         private val builtinModels: Array<YeshinModel<*>> = arrayOf(
-            HomeModel
+            HomeModel,
+            TestModel
         )
 
         init {

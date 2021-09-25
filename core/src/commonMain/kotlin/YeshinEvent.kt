@@ -8,6 +8,8 @@
 package com.elouyi.yeshin
 
 import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 
 public typealias YeshinEventHandler<T> = suspend T.() -> Unit
@@ -28,29 +30,31 @@ public class YeshinEvent<T : Any>(clazz: KClass<T>) {
 
     }
 
-    private val handlers = mutableListOf<YeshinEventHandler<T>>()
+    private val handlers = mutableMapOf<YeshinEventHandler<T>, CoroutineContext>()
 
     private val scope = CoroutineScope(
         SupervisorJob()
-                + CoroutineName(clazz.simpleName.toString())
+                + CoroutineName(clazz.simpleName.toString() + "Event")
                 + eventExceptionHandler
     )
 
-    public fun subscribe(handler: YeshinEventHandler<T>) {
-        handlers += handler
+    public fun subscribe(context: CoroutineContext = EmptyCoroutineContext, handler: YeshinEventHandler<T>) {
+        handlers += handler to context
     }
 
     public fun unsubscribe(handler: YeshinEventHandler<T>) {
         handlers -= handler
     }
 
-    public operator fun plusAssign(handler: YeshinEventHandler<T>): Unit = subscribe(handler)
+    public operator fun plusAssign(
+        handler: YeshinEventHandler<T>
+    ): Unit = subscribe(EmptyCoroutineContext, handler)
 
     public operator fun minusAssign(handler: YeshinEventHandler<T>): Unit = unsubscribe(handler)
 
-    public operator fun invoke(value: T) {
-        for (handler in handlers) {
-            scope.launch {
+    public operator fun invoke(value: T, context: CoroutineContext = EmptyCoroutineContext) {
+        for ((handler, ct) in handlers) {
+            scope.launch(context + ct) {
                 handler(value)
             }
         }

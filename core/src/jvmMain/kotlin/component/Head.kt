@@ -21,6 +21,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.elouyi.yeshin.Resource
+import com.elouyi.yeshin.component.model.TestModel
+import com.elouyi.yeshin.component.model.YeshinModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -39,12 +41,14 @@ public class Head(
 
     init {
         scope.launch {
-            delay(100)
+            delay(2000)
+            YeshinModel.modelChangeEvent(TestModel)
+        }
+    }
+
+    private fun openDrawer() {
+        scope.launch {
             scaffoldState.drawerState.open()
-            while (true) {
-                delay(1000)
-                state.value = System.currentTimeMillis().toString()
-            }
         }
     }
 
@@ -57,7 +61,7 @@ public class Head(
             Image(
                 wk33,
                 "sa",
-                modifier = Modifier.size(40.dp).clip(CircleShape)
+                modifier = Modifier.size(50.dp).clip(CircleShape)
             )
             Scaffold(
                 scaffoldState = scaffoldState,
@@ -66,6 +70,9 @@ public class Head(
                 },
                 drawerShape = RoundedCornerShape(3.dp)
             ) {
+                Button(onClick = ::openDrawer) {
+                    Text("122")
+                }
                 Text("Scaffold")
             }
         }

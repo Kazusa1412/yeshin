@@ -16,12 +16,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.elouyi.yeshin.component.model.YeshinModel
 import kotlinx.coroutines.CoroutineScope
+import kotlin.coroutines.coroutineContext
 
 
 public class MainContainer(
     override val state: MutableState<YeshinModel<*>>,
     private val componentScope: CoroutineScope
 ) : RComponent<YeshinModel<*>> {
+
+
+    init {
+        YeshinModel.modelChangeEvent.subscribe {
+            println(coroutineContext)
+            this@MainContainer.state.value = this
+        }
+    }
 
     @Composable
     override fun render() {
